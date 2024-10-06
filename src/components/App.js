@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useAuth } from "./AuthContext";
 
 const App = () => {
@@ -8,13 +8,15 @@ const App = () => {
 
   const addItem = () => {
     if (inputValue) {
-      setItems([...items, inputValue]);
+      setItems([...items, { id: Date.now(), name: inputValue }]);
       setInputValue("");
+    } else {
+      alert("Please enter an item.");
     }
   };
 
-  const removeItem = (item) => {
-    setItems(items.filter((i) => i !== item));
+  const removeItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
   };
 
   const clearItems = () => {
@@ -41,13 +43,18 @@ const App = () => {
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Enter item"
       />
-      <button onClick={addItem}>Add</button>
+      <button id="add-item" onClick={addItem}>
+        Add
+      </button>
 
       <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            {item}
-            <button id={`remove-${item}`} onClick={() => removeItem(item)}>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.name}
+            <button
+              id={`remove-${item.name}`}
+              onClick={() => removeItem(item.id)}
+            >
               Remove
             </button>
           </li>
