@@ -1,4 +1,4 @@
 {
-  "testRepo": "test-solution",
+  "testRepo": "context-reducer-solution",
   "pathToFile": "cypress/integration/tests/test.spec.js"
 }
