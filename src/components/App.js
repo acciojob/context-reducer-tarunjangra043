@@ -1,71 +1,73 @@
-import React, { useState } from "react";
-import { useAuth } from "./AuthContext";
+//cypress test cases not running
+// App.js
+import React, { useState, useContext } from 'react';
+
 
 const App = () => {
-  const { user, login, signout } = useAuth();
-  const [inputValue, setInputValue] = useState("");
-  const [items, setItems] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser, setCurrentUser] = useState('');
+    const [items, setItems] = useState([]);
 
-  const addItem = () => {
-    if (inputValue) {
-      setItems([...items, { id: Date.now(), name: inputValue }]);
-      setInputValue("");
-    } else {
-      alert("Please enter an item.");
-    }
-  };
 
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
+    const login = () => {
+        setCurrentUser('rohan');
+        setIsAuthenticated(true);
+    };
 
-  const clearItems = () => {
-    setItems([]);
-  };
+    const logout = () => {
+        setCurrentUser('');
+        setIsAuthenticated(false);
+    };
 
-  return (
-    <div>
-      <button id="login-btn" onClick={login}>
-        Login
-      </button>
-      <button id="signout" onClick={signout}>
-        Signout
-      </button>
+    const addItem = (item) => {
+        setItems([...items, item]);
+    };
 
-      <div id="current-user">
-        Current user: {user.name}, isAuthenticated:{" "}
-        {user.isAuthenticated ? "Yes" : "No"}
-      </div>
+    const removeItem = (item) => {
+        setItems(items.filter(i => i !== item));
+    };
 
-      <input
-        id="shopping-input"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder="Enter item"
-      />
-      <button id="add-item" onClick={addItem}>
-        Add
-      </button>
+    const clearItems = () => {
+        setItems([]);
+    };
 
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            {item.name}
-            <button
-              id={`remove-${item.name}`}
-              onClick={() => removeItem(item.id)}
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
 
-      <button id="clear-list" onClick={clearItems}>
-        Clear
-      </button>
-    </div>
-  );
+    const handleAdd = () => {
+        if (inputValue.trim()) {
+            addItem(inputValue.trim());
+            setInputValue('');
+        }
+    };
+
+
+    return (
+        <div>
+            <div>
+                <button id="login-btn" onClick={login}>Login</button>
+                <button id="signout" onClick={logout}>Signout</button>
+            </div>
+            <div id="current-user">
+                {`Current user: ${currentUser}, isAuthenticated: ${isAuthenticated ? 'Yes' : 'No'}`}
+            </div>
+            <input
+                id="shopping-input"
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button onClick={handleAdd}>Add</button>
+            <button id="clear-list" onClick={clearItems}>Clear List</button>
+            <ul>
+                {items.map(item => (
+                    <li key={item} id={`item-${item}`}>
+                        {item}
+                        <button id={`remove-${item}`} onClick={() => removeItem(item)}>Remove</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default App;
