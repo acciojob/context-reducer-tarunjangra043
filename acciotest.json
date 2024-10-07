@@ -1,4 +1,4 @@
 {
-    "testRepo": "tour-solution",
-    "pathToFile": "cypress/integration/tests/test.spec.js"
+  "testRepo": "context-reducer-tarunjangra043",
+  "pathToFile": "cypress/integration/tests/test.spec.js"
 }
